@@ -29,3 +29,7 @@ No test framework is configured yet.
 - **Tailwind CSS v4**: configured CSS-first in `app/globals.css` (`@import "tailwindcss"` + `@theme inline`); there is no `tailwind.config` file. Theme tokens (`--background`, `--foreground`, Geist font vars) live there.
 - Layouts/pages use the generated global types (e.g. `LayoutProps<"/">`) rather than hand-written prop types.
 - Import alias: `@/*` maps to the repo root.
+
+#Styles
+
+Usa siempre /fronted-design para diseñar la interfaz de usuario.
