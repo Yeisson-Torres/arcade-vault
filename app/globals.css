@@ -633,7 +633,9 @@ a { color: inherit; text-decoration: none; }
 .hud-stat .v { font-family: var(--pixel); font-size: 16px; color: var(--cyan); text-shadow: 0 0 6px rgba(0,245,255,0.5); }
 .hud-stat.lives .v { color: var(--magenta); text-shadow: 0 0 6px rgba(255,0,110,0.5); }
 .hud-stat.level .v { color: var(--yellow); text-shadow: 0 0 6px rgba(245,255,0,0.5); }
-.hud-actions { display: flex; gap: 10px; }
+.hud-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.hud-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+.hud-stat.player .v { color: var(--ink); }
 
 .crt {
   position: relative;
@@ -681,6 +683,9 @@ a { color: inherit; text-decoration: none; }
   font-size: 12px;
   text-align: center;
 }
+.crt-content.paused { background: rgba(0,0,0,0.6); z-index: 5; }
+.crt-content.paused .pause-title { font-size: 22px; }
+.crt-content.paused .pause-hint { font-size: 11px; color: var(--ink-dim); margin-top: 10px; letter-spacing: 0.16em; }
 .crt-bottom {
   display: flex; align-items: center; justify-content: space-between;
   margin-top: 14px;
