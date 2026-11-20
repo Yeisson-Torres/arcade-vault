@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
+import { GameDetail } from "@/components/screens/GameDetail";
 import { Library } from "@/components/screens/Library";
 import type { Route } from "@/lib/router";
 import { loadUser, type User } from "@/lib/storage";
@@ -50,6 +51,8 @@ export function ArcadeApp() {
       <main className="av-main">
         {route.name === "biblioteca" ? (
           <Library navigate={navigate} />
+        ) : route.name === "detalle" ? (
+          <GameDetail key={route.id} id={route.id} navigate={navigate} />
         ) : (
           <Placeholder route={route} user={user} />
         )}
