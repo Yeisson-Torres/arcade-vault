@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
+import { Library } from "@/components/screens/Library";
 import type { Route } from "@/lib/router";
 import { loadUser, type User } from "@/lib/storage";
 import { useHashRoute } from "@/lib/useHashRoute";
@@ -47,7 +48,11 @@ export function ArcadeApp() {
     <>
       <Nav route={route} navigate={navigate} user={user} onSignOut={handleSignOut} />
       <main className="av-main">
-        <Placeholder route={route} user={user} />
+        {route.name === "biblioteca" ? (
+          <Library navigate={navigate} />
+        ) : (
+          <Placeholder route={route} user={user} />
+        )}
       </main>
       <Footer />
     </>

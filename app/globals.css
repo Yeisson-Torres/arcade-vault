@@ -379,6 +379,9 @@ a { color: inherit; text-decoration: none; }
 }
 .card:hover::before { opacity: 0.5; }
 
+.av-empty { grid-column: 1 / -1; text-align: center; padding: 80px; color: var(--ink-faint); }
+.av-empty .pixel { font-size: 14px; color: var(--magenta); margin-bottom: 12px; }
+
 .card .cover {
   aspect-ratio: 4 / 3;
   position: relative;
