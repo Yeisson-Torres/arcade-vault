@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
+import { Nav } from "@/components/Nav";
 import type { Route } from "@/lib/router";
 import { loadUser, type User } from "@/lib/storage";
 import { useHashRoute } from "@/lib/useHashRoute";
@@ -28,7 +29,7 @@ function Placeholder({ route, user }: { route: Route; user: User | null }) {
 }
 
 export function ArcadeApp() {
-  const { route } = useHashRoute();
+  const { route, navigate } = useHashRoute();
   // Estado inicial fijo (null) en servidor y cliente; la sesión se lee tras montar.
   const [user, setUser] = useState<User | null>(null);
 
@@ -39,8 +40,12 @@ export function ArcadeApp() {
     setUser(loadUser());
   }, []);
 
+  // La persistencia del cierre de sesión (clearUser) se conecta en el paso 10.
+  const handleSignOut = () => setUser(null);
+
   return (
     <>
+      <Nav route={route} navigate={navigate} user={user} onSignOut={handleSignOut} />
       <main className="av-main">
         <Placeholder route={route} user={user} />
       </main>
