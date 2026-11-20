@@ -956,6 +956,29 @@ a { color: inherit; text-decoration: none; }
   color: var(--yellow); letter-spacing: 0.16em; background: rgba(245,255,0,0.04);
   border-bottom: 1px solid var(--line-2);
 }
+/* Port de los style={{…}} inline de salon.jsx */
+.hall-head .tagline { font-size: 10px; }
+.podium-slot .champ { font-size: 9px; color: var(--gold); letter-spacing: 0.18em; }
+.podium-slot.gold .rank-num { font-size: 36px; margin-top: 4px; }
+.podium-slot.gold .score { font-size: 20px; }
+.hall-table .tr.you .rk,
+.hall-table .tr.you .pl { color: var(--yellow); }
+.hall-table .tr.you .sc { color: var(--yellow); text-shadow: 0 0 6px rgba(245,255,0,0.5); }
+.hall-back { text-align: center; margin-top: 32px; }
+/* Entrada escalonada: la cabecera (.th) es el hijo 1; las 12 filas, los hijos 2–13 (50 ms cada una). */
+.hall-table .tr:nth-child(3) { animation-delay: 50ms; }
+.hall-table .tr:nth-child(4) { animation-delay: 100ms; }
+.hall-table .tr:nth-child(5) { animation-delay: 150ms; }
+.hall-table .tr:nth-child(6) { animation-delay: 200ms; }
+.hall-table .tr:nth-child(7) { animation-delay: 250ms; }
+.hall-table .tr:nth-child(8) { animation-delay: 300ms; }
+.hall-table .tr:nth-child(9) { animation-delay: 350ms; }
+.hall-table .tr:nth-child(10) { animation-delay: 400ms; }
+.hall-table .tr:nth-child(11) { animation-delay: 450ms; }
+.hall-table .tr:nth-child(12) { animation-delay: 500ms; }
+.hall-table .tr:nth-child(13) { animation-delay: 550ms; }
+.hall-table .tr.you-label { animation-delay: 0ms; }
+.hall-table .tr.you { animation-delay: 650ms; }
 @keyframes rise {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }

@@ -6,31 +6,10 @@ import { Nav } from "@/components/Nav";
 import { Auth } from "@/components/screens/Auth";
 import { GameDetail } from "@/components/screens/GameDetail";
 import { GamePlayer } from "@/components/screens/GamePlayer";
+import { HallOfFame } from "@/components/screens/HallOfFame";
 import { Library } from "@/components/screens/Library";
-import type { Route } from "@/lib/router";
 import { appendScore, clearUser, loadUser, saveUser, type User } from "@/lib/storage";
 import { useHashRoute } from "@/lib/useHashRoute";
-
-const SCREEN_NAMES: Record<Route["name"], string> = {
-  biblioteca: "BIBLIOTECA",
-  detalle: "DETALLE",
-  player: "REPRODUCTOR",
-  auth: "ACCESO",
-  salon: "SALÓN DE LA FAMA",
-};
-
-// Placeholder temporal: se sustituye por cada pantalla en los pasos 6–11.
-function Placeholder({ route, user }: { route: Route; user: User | null }) {
-  return (
-    <section className="px-8 py-24 text-center">
-      <h1 className="font-pixel text-xl text-cyan">{SCREEN_NAMES[route.name]}</h1>
-      <p className="mt-4 text-ink-dim">
-        {"id" in route ? `id: ${route.id} · ` : ""}
-        sesión: {user ? user.name : "ninguna"}
-      </p>
-    </section>
-  );
-}
 
 export function ArcadeApp() {
   const { route, navigate } = useHashRoute();
@@ -69,7 +48,7 @@ export function ArcadeApp() {
         ) : route.name === "auth" ? (
           <Auth navigate={navigate} onLogin={handleLogin} />
         ) : (
-          <Placeholder route={route} user={user} />
+          <HallOfFame user={user} navigate={navigate} />
         )}
       </main>
       <Footer />
