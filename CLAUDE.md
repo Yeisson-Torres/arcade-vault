@@ -33,3 +33,7 @@ No test framework is configured yet.
 #Styles
 
 Usa siempre /fronted-design para diseñar la interfaz de usuario.
+
+## Playwright
+
+Guarda todas las capturas de pantalla de Playwright en `.playwright-screenshots/` (por ejemplo, `filename: ".playwright-screenshots/home-1280.png"` en `browser_take_screenshot`). No uses `.playwright-mcp/` ni otras carpetas para las capturas.
