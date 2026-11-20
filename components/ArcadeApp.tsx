@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
+import { Auth } from "@/components/screens/Auth";
 import { GameDetail } from "@/components/screens/GameDetail";
 import { GamePlayer } from "@/components/screens/GamePlayer";
 import { Library } from "@/components/screens/Library";
 import type { Route } from "@/lib/router";
-import { appendScore, loadUser, type User } from "@/lib/storage";
+import { appendScore, clearUser, loadUser, saveUser, type User } from "@/lib/storage";
 import { useHashRoute } from "@/lib/useHashRoute";
 
 const SCREEN_NAMES: Record<Route["name"], string> = {
@@ -43,8 +44,17 @@ export function ArcadeApp() {
     setUser(loadUser());
   }, []);
 
-  // La persistencia del cierre de sesión (clearUser) se conecta en el paso 10.
-  const handleSignOut = () => setUser(null);
+  // `null` = invitado: no hay sesión que guardar.
+  const handleLogin = (next: User | null) => {
+    setUser(next);
+    if (next) saveUser(next);
+    else clearUser();
+  };
+
+  const handleSignOut = () => {
+    setUser(null);
+    clearUser();
+  };
 
   return (
     <>
@@ -56,6 +66,8 @@ export function ArcadeApp() {
           <GameDetail key={route.id} id={route.id} navigate={navigate} />
         ) : route.name === "player" ? (
           <GamePlayer key={route.id} id={route.id} user={user} navigate={navigate} onSaveScore={appendScore} />
+        ) : route.name === "auth" ? (
+          <Auth navigate={navigate} onLogin={handleLogin} />
         ) : (
           <Placeholder route={route} user={user} />
         )}
