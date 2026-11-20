@@ -7,7 +7,7 @@ import { GameDetail } from "@/components/screens/GameDetail";
 import { GamePlayer } from "@/components/screens/GamePlayer";
 import { Library } from "@/components/screens/Library";
 import type { Route } from "@/lib/router";
-import { loadUser, type User } from "@/lib/storage";
+import { appendScore, loadUser, type User } from "@/lib/storage";
 import { useHashRoute } from "@/lib/useHashRoute";
 
 const SCREEN_NAMES: Record<Route["name"], string> = {
@@ -55,7 +55,7 @@ export function ArcadeApp() {
         ) : route.name === "detalle" ? (
           <GameDetail key={route.id} id={route.id} navigate={navigate} />
         ) : route.name === "player" ? (
-          <GamePlayer key={route.id} id={route.id} user={user} navigate={navigate} />
+          <GamePlayer key={route.id} id={route.id} user={user} navigate={navigate} onSaveScore={appendScore} />
         ) : (
           <Placeholder route={route} user={user} />
         )}

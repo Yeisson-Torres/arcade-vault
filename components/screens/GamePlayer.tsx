@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { GAMES } from "@/lib/data";
 import type { Route } from "@/lib/router";
-import type { User } from "@/lib/storage";
+import type { SavedScore, User } from "@/lib/storage";
 
 interface GamePlayerProps {
   id: string;
   user: User | null;
   navigate: (route: Route) => void;
+  onSaveScore: (entry: Omit<SavedScore, "at">) => void;
 }
 
 interface SimState {
@@ -48,11 +49,14 @@ function simReducer(state: SimState, action: SimAction): SimState {
 
 const TICK_MS = 220;
 
-export function GamePlayer({ id, user, navigate }: GamePlayerProps) {
+export function GamePlayer({ id, user, navigate, onSaveScore }: GamePlayerProps) {
   const game = GAMES.find((g) => g.id === id);
   const [sim, dispatch] = useReducer(simReducer, INITIAL);
   const { score, lives, level, paused, over } = sim;
   const running = !paused && !over;
+  // null = sin editar: se usa el nombre de la sesión (que llega tras montar) o INVITADO.
+  const [nameDraft, setNameDraft] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     if (!running) return;
@@ -64,7 +68,18 @@ export function GamePlayer({ id, user, navigate }: GamePlayerProps) {
   // El router ya descarta ids inexistentes; esto es solo una salvaguarda.
   if (!game) return null;
 
-  const playerName = user ? user.name : "INVITADO";
+  const playerName = nameDraft ?? (user ? user.name : "INVITADO");
+
+  const saveScore = () => {
+    onSaveScore({ game: game.id, score, name: playerName });
+    setSaved(true);
+  };
+
+  // Como en la plantilla, se conserva el nombre escrito entre partidas.
+  const restart = () => {
+    dispatch({ type: "restart" });
+    setSaved(false);
+  };
 
   return (
     <div className="av-player fade-in">
@@ -126,6 +141,42 @@ export function GamePlayer({ id, user, navigate }: GamePlayerProps) {
           <span>CARGA · 1MB</span>
         </div>
       </div>
+
+      {over && (
+        <div className="modal-bd">
+          <div className="modal" role="dialog" aria-modal="true" aria-labelledby="game-over-title">
+            <h2 id="game-over-title">FIN DEL JUEGO</h2>
+            <div className="final-label">PUNTUACIÓN FINAL</div>
+            <div className="final">{score.toLocaleString("es-ES")}</div>
+            {!saved ? (
+              <div className="input-row">
+                <input
+                  value={playerName}
+                  onChange={(e) => setNameDraft(e.target.value.toUpperCase().slice(0, 10))}
+                  placeholder="TUS INICIALES"
+                  aria-label="Tus iniciales"
+                  maxLength={10}
+                />
+                <button type="button" className="btn yellow" onClick={saveScore}>
+                  GUARDAR PUNTUACIÓN
+                </button>
+              </div>
+            ) : (
+              <div className="toast-saved" role="status">
+                ▸ PUNTUACIÓN GUARDADA_
+              </div>
+            )}
+            <div className="actions">
+              <button type="button" className="btn" onClick={restart}>
+                JUGAR DE NUEVO
+              </button>
+              <button type="button" className="btn magenta" onClick={() => navigate({ name: "biblioteca" })}>
+                VOLVER AL VAULT
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
