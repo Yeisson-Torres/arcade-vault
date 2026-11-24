@@ -7,6 +7,7 @@ import { Auth } from "@/components/screens/Auth";
 import { GameDetail } from "@/components/screens/GameDetail";
 import { GamePlayer } from "@/components/screens/GamePlayer";
 import { HallOfFame } from "@/components/screens/HallOfFame";
+import { Home } from "@/components/screens/Home";
 import { Library } from "@/components/screens/Library";
 import { appendScore, clearUser, loadUser, saveUser, type User } from "@/lib/storage";
 import { useHashRoute } from "@/lib/useHashRoute";
@@ -40,10 +41,7 @@ export function ArcadeApp() {
       <Nav route={route} navigate={navigate} user={user} onSignOut={handleSignOut} />
       <main className="av-main">
         {route.name === "home" ? (
-          // Placeholder temporal (SPEC 02, paso 1): se sustituye por <Home /> en el paso 7.
-          <div className="fade-in">
-            <p>HOME</p>
-          </div>
+          <Home navigate={navigate} />
         ) : route.name === "biblioteca" ? (
           <Library navigate={navigate} />
         ) : route.name === "detalle" ? (
