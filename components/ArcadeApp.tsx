@@ -48,6 +48,9 @@ export function ArcadeApp() {
           <GameDetail key={route.id} id={route.id} navigate={navigate} />
         ) : route.name === "player" ? (
           <GamePlayer key={route.id} id={route.id} user={user} navigate={navigate} onSaveScore={appendScore} />
+        ) : route.name === "about" ? (
+          // Placeholder temporal (SPEC 03, paso 1); se sustituye por <About /> en el paso 4.
+          <section className="pixel neon-cyan">ACERCA DE ARCADE VAULT</section>
         ) : route.name === "auth" ? (
           <Auth navigate={navigate} onLogin={handleLogin} />
         ) : (
