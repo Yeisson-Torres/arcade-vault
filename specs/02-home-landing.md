@@ -1,6 +1,6 @@
 # SPEC 02 — Home (landing) de Arcade Vault
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** SPEC 01
 > **Fecha:** 2026-11-24
 > **Objetivo:** Portar la Home de `references/resources/resources/templates/home-about/home-about/home.jsx` como nueva pantalla de entrada en `#/`, moviendo la Biblioteca a `#/biblioteca`.
