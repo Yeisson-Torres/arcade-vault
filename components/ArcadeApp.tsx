@@ -39,7 +39,12 @@ export function ArcadeApp() {
     <>
       <Nav route={route} navigate={navigate} user={user} onSignOut={handleSignOut} />
       <main className="av-main">
-        {route.name === "biblioteca" ? (
+        {route.name === "home" ? (
+          // Placeholder temporal (SPEC 02, paso 1): se sustituye por <Home /> en el paso 7.
+          <div className="fade-in">
+            <p>HOME</p>
+          </div>
+        ) : route.name === "biblioteca" ? (
           <Library navigate={navigate} />
         ) : route.name === "detalle" ? (
           <GameDetail key={route.id} id={route.id} navigate={navigate} />
