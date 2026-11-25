@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
+import { About } from "@/components/screens/About";
 import { Auth } from "@/components/screens/Auth";
 import { GameDetail } from "@/components/screens/GameDetail";
 import { GamePlayer } from "@/components/screens/GamePlayer";
@@ -49,8 +50,7 @@ export function ArcadeApp() {
         ) : route.name === "player" ? (
           <GamePlayer key={route.id} id={route.id} user={user} navigate={navigate} onSaveScore={appendScore} />
         ) : route.name === "about" ? (
-          // Placeholder temporal (SPEC 03, paso 1); se sustituye por <About /> en el paso 4.
-          <section className="pixel neon-cyan">ACERCA DE ARCADE VAULT</section>
+          <About />
         ) : route.name === "auth" ? (
           <Auth navigate={navigate} onLogin={handleLogin} />
         ) : (
