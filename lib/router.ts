@@ -1,4 +1,4 @@
-// Router por hash legible: #/ (Home), #/biblioteca, #/detalle/:id, #/jugar/:id, #/auth, #/salon.
+// Router por hash legible: #/ (Home), #/biblioteca, #/detalle/:id, #/jugar/:id, #/auth, #/salon, #/about.
 
 import { GAMES } from "@/lib/data";
 
@@ -8,7 +8,8 @@ export type Route =
   | { name: "detalle"; id: string }
   | { name: "player"; id: string }
   | { name: "auth" }
-  | { name: "salon" };
+  | { name: "salon" }
+  | { name: "about" };
 
 export const HOME: Route = { name: "home" };
 
@@ -40,6 +41,8 @@ export function parseHash(hash: string): Route {
       return id === undefined ? { name: "auth" } : HOME;
     case "salon":
       return id === undefined ? { name: "salon" } : HOME;
+    case "about":
+      return id === undefined ? { name: "about" } : HOME;
     case "detalle":
       return id !== undefined && gameExists(id) ? { name: "detalle", id } : HOME;
     case "jugar":
@@ -64,5 +67,7 @@ export function formatHash(route: Route): string {
       return "#/auth";
     case "salon":
       return "#/salon";
+    case "about":
+      return "#/about";
   }
 }

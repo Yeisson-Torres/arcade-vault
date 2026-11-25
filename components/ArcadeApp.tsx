@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
+import { About } from "@/components/screens/About";
 import { Auth } from "@/components/screens/Auth";
 import { GameDetail } from "@/components/screens/GameDetail";
 import { GamePlayer } from "@/components/screens/GamePlayer";
@@ -48,6 +49,8 @@ export function ArcadeApp() {
           <GameDetail key={route.id} id={route.id} navigate={navigate} />
         ) : route.name === "player" ? (
           <GamePlayer key={route.id} id={route.id} user={user} navigate={navigate} onSaveScore={appendScore} />
+        ) : route.name === "about" ? (
+          <About />
         ) : route.name === "auth" ? (
           <Auth navigate={navigate} onLogin={handleLogin} />
         ) : (
