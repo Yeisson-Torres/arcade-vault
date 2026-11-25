@@ -3,8 +3,9 @@
 // Formulario de contacto de About — portado de `about.jsx` (SPEC 03).
 // Vistas: formulario → terminal de éxito | terminal de error (nueva respecto a la plantilla).
 
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { hasEmptyField, type ContactErrorCode, type ContactInput, type ContactResult } from "@/lib/contact";
+import { useEffect, useId, useRef, useState, useTransition, type FormEvent } from "react";
+import { sendContactMessage } from "@/app/actions/contact";
+import { hasEmptyField, type ContactErrorCode, type ContactInput } from "@/lib/contact";
 
 type View = { kind: "form" } | { kind: "sent"; name: string } | { kind: "error"; code: ContactErrorCode };
 
@@ -16,17 +17,12 @@ const ERROR_TEXT: Record<ContactErrorCode, string> = {
   send_failed: "> NO SE PUDO TRANSMITIR. INTÉNTALO DE NUEVO.",
 };
 
-// Envío simulado (paso 6). En el paso 9 se sustituye por la Server Action `sendContactMessage`.
-async function fakeSend(input: ContactInput): Promise<ContactResult> {
-  void input;
-  return { ok: true };
-}
-
 export function ContactForm() {
   const id = useId();
   const [form, setForm] = useState<ContactInput>(EMPTY);
   const [view, setView] = useState<View>({ kind: "form" });
   const [shake, setShake] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const shakeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => () => {
@@ -36,16 +32,27 @@ export function ContactForm() {
   const update = (field: keyof ContactInput) => (e: { target: { value: string } }) =>
     setForm((f) => ({ ...f, [field]: e.target.value }));
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isPending) return;
     if (hasEmptyField(form)) {
       if (shakeTimer.current) clearTimeout(shakeTimer.current);
       setShake(true);
       shakeTimer.current = setTimeout(() => setShake(false), 400);
       return;
     }
-    const result = await fakeSend(form);
-    setView(result.ok ? { kind: "sent", name: form.name.trim() } : { kind: "error", code: result.error });
+    const data = form;
+    startTransition(async () => {
+      let next: View;
+      try {
+        const result = await sendContactMessage(data);
+        next = result.ok ? { kind: "sent", name: data.name.trim() } : { kind: "error", code: result.error };
+      } catch {
+        // Fallo de red o del servidor antes de llegar a la acción.
+        next = { kind: "error", code: "send_failed" };
+      }
+      startTransition(() => setView(next));
+    });
   };
 
   // "ENVIAR OTRO MENSAJE": formulario vacío.
@@ -63,7 +70,7 @@ export function ContactForm() {
         <>
           <div className="field">
             <label htmlFor={`${id}-name`}>NOMBRE</label>
-            <input id={`${id}-name`} value={form.name} onChange={update("name")} placeholder="px_kai" />
+            <input id={`${id}-name`} value={form.name} onChange={update("name")} readOnly={isPending} placeholder="px_kai" />
           </div>
           <div className="field">
             <label htmlFor={`${id}-email`}>CORREO ELECTRÓNICO</label>
@@ -72,6 +79,7 @@ export function ContactForm() {
               type="email"
               value={form.email}
               onChange={update("email")}
+              readOnly={isPending}
               placeholder="jugador@vault.gg"
             />
           </div>
@@ -82,6 +90,7 @@ export function ContactForm() {
               rows={5}
               value={form.msg}
               onChange={update("msg")}
+              readOnly={isPending}
               placeholder="Cuéntanos qué tienes en mente…"
             />
           </div>
@@ -97,8 +106,8 @@ export function ContactForm() {
               onChange={update("website")}
             />
           </div>
-          <button className="btn xl press contact-submit" type="submit">
-            ▶  ENVIAR MENSAJE
+          <button className="btn xl press contact-submit" type="submit" disabled={isPending} aria-busy={isPending}>
+            {isPending ? "▶ TRANSMITIENDO…" : "▶  ENVIAR MENSAJE"}
           </button>
         </>
       ) : view.kind === "sent" ? (
