@@ -3,6 +3,7 @@
 // About ("Acerca de") de Arcade Vault — portada de la plantilla `home-about/about.jsx` (SPEC 03).
 
 import { useRef } from "react";
+import { ContactForm } from "@/components/about/ContactForm";
 import { HighlightIcon } from "@/components/about/HighlightIcon";
 import { HIGHLIGHTS } from "@/lib/aboutData";
 import { useReveal } from "@/lib/useReveal";
@@ -72,7 +73,8 @@ export function About() {
               </div>
             </div>
           </div>
-          {/* El formulario de contacto (ContactForm) se añade en el paso 6. */}
+
+          <ContactForm />
         </div>
       </section>
     </div>
